@@ -8,8 +8,8 @@ End-to-end test automation of **OrangeHRM OS 5.9**, an open-source HR management
 | Boundary Value Analysis (7-point BVA) | §3 | `AddEmployeeBvaTest`, `AddUserValidationTest` |
 | White-box: CFG, Cyclomatic Complexity, Basis Paths | §4 | `PasswordPolicyWhiteBoxTest` |
 
-* **Course:** Software Testing & Quality Assurance ([Course Code])
-* **Team:** [Student A Name] ([USN-A]) is the Automation Architect & Framework Engineer. [Student B Name] ([USN-B]) is the Test Designer & White-Box Specialist. Section [Section].
+* **Course:** Software Testing & Quality Assurance (Course code 2501, faculty guide: Nithin Sir)
+* **Team:** Shaili Goswami (20241ISE0017) is the Automation Architect & Framework Engineer. Amanda Abreo (20241ISE0055) is the Test Designer & White-Box Specialist. Section 5ISE01.
 * **Application under test:** https://opensource-demo.orangehrmlive.com/web/index.php/auth/login (public demo, credentials `Admin` / `admin123` are shown on its login page)
 
 ---
@@ -154,6 +154,6 @@ There is one test per independent basis path (BP1–BP9). One extra test covers 
 ## 8. Evidence
 
 Add these files to `docs/evidence/`:
-* `eclipse-junit-green.png`: the Eclipse JUnit view with all tests passing
+* `final-run.png`: the VS Code terminal showing `Tests run: 74 ... BUILD SUCCESS`
 * `surefire-report.png`: the HTML report summary
 * `demo.gif` or `demo.mp4`: a recording of a test run. Run with `-Dheadless=false` and record with ScreenToGif or OBS.
