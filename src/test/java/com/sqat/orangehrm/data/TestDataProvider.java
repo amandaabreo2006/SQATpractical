@@ -40,7 +40,7 @@ public final class TestDataProvider {
                         : Messages.shouldNotExceed(USERNAME_MAX))));
     }
 
-    /** BVA-04: Admin user Password, range [8, 64] (min from the server-side password policy). */
+    /** BVA-04: Admin user Password, range [7, 64] on the demo (min comes from config: server-side password policy). */
     public static Stream<Arguments> passwordBoundaries() {
         int min = ConfigReader.getInt("password.min.length");
         int max = ConfigReader.getInt("password.max.length");
