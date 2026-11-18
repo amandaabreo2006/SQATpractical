@@ -122,7 +122,10 @@ public abstract class BasePage {
 
     /** Clears the field the way a user would (Ctrl+A, Delete) so Vue's v-model sees the change, then types. */
     protected void type(WebElement element, String text) {
-        WebElement field = waitVisible(element);
+        // OrangeHRM briefly lays a form loader over the inputs while it fetches data;
+        // clicking during that time throws ElementClickInterceptedException.
+        waitForLoadersToDisappear();
+        WebElement field = waitClickable(waitVisible(element));
         field.click();
         field.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
         if (text != null && !text.isEmpty()) {
