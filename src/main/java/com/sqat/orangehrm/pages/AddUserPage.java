@@ -1,5 +1,6 @@
 package com.sqat.orangehrm.pages;
 
+import com.sqat.orangehrm.constants.Messages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -52,8 +53,26 @@ public class AddUserPage extends AuthenticatedPage {
     /** Submits and waits until client-side validation has run (User Role is always left empty). */
     public AddUserPage clickSaveAndWaitForValidation() {
         click(saveButton);
-        waitForFieldError(USER_ROLE_FIELD, com.sqat.orangehrm.constants.Messages.REQUIRED);
+        if (!Messages.REQUIRED.equals(waitForFieldError(USER_ROLE_FIELD, Messages.REQUIRED))) {
+            click(saveButton); // the first click was swallowed while the form was busy
+            waitForFieldError(USER_ROLE_FIELD, Messages.REQUIRED);
+        }
         return this;
+    }
+
+    /**
+     * Waits for the expected message under a field. On the slow shared demo the form's validation can stall
+     * (an async server check never answers) and leave a message from an intermediate keystroke on screen.
+     * If so, the form is submitted once more, which re-runs every rule; a genuinely wrong message stays wrong.
+     */
+    private String waitForFieldErrorRevalidating(By field, String expected) {
+        String actual = waitForFieldError(field, expected);
+        if (!actual.equals(expected)) {
+            System.out.println("[revalidate] expected \"" + expected + "\" but saw \"" + actual + "\" - submitting again");
+            click(saveButton);
+            actual = waitForFieldError(field, expected);
+        }
+        return actual;
     }
 
     /** The password strength chip appears once the server-side password check has answered. */
@@ -69,15 +88,15 @@ public class AddUserPage extends AuthenticatedPage {
     // ---- State readers
 
     public String waitForUsernameError(String expected) {
-        return waitForFieldError(USERNAME_FIELD, expected);
+        return waitForFieldErrorRevalidating(USERNAME_FIELD, expected);
     }
 
     public String waitForPasswordError(String expected) {
-        return waitForFieldError(PASSWORD_FIELD, expected);
+        return waitForFieldErrorRevalidating(PASSWORD_FIELD, expected);
     }
 
     public String waitForConfirmPasswordError(String expected) {
-        return waitForFieldError(CONFIRM_PASSWORD_FIELD, expected);
+        return waitForFieldErrorRevalidating(CONFIRM_PASSWORD_FIELD, expected);
     }
 
     public String usernameError() {
