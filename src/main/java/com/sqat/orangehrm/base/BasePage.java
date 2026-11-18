@@ -44,9 +44,19 @@ public abstract class BasePage {
 
     // ------------------------------------------------------------------ navigation
 
+    /**
+     * Opens a page and waits until it is ready. The shared public demo sometimes hangs on its loading
+     * spinner; in that case the page is reloaded once before the wait is allowed to fail.
+     */
     protected void openPath(String path) {
         driver.get(ConfigReader.baseUrl() + path);
-        waitForPageReady();
+        try {
+            waitForPageReady();
+        } catch (TimeoutException slowServer) {
+            System.out.println("[retry] " + path + " still loading after " + timeout.toSeconds() + " s - reloading once");
+            driver.navigate().refresh();
+            waitForPageReady();
+        }
     }
 
     public String currentUrl() {
