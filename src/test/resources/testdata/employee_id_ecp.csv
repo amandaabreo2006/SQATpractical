@@ -1,0 +1,5 @@
+partition,employeeId,expectedError
+ECP-03 V1 empty (optional field),NULL,NULL
+ECP-03 V2 1..10 chars alphanumeric,E4521,NULL
+ECP-03 V3 exactly 10 chars,E123456789,NULL
+ECP-03 I1 more than 10 chars,E1234567890,Should not exceed 10 characters
